@@ -1,3 +1,4 @@
+
 function Square(side){
     this.side = side
 }
@@ -20,6 +21,7 @@ function Room(number){
     this.available = true
     this.guests = 0
 }
+
 
 
 
