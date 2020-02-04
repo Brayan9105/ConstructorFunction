@@ -40,11 +40,14 @@ function Person(name, weight, height){
 Person.prototype.bmi = function(){return Math.pow((this.weight/this.height), 2)}
 Person.prototype.greet = function(person){ return `Hi ${person.name} muy name is ${this.name}`}
 
+
 const p1 = new Person('Pedro', 72, 1.5)
 const p2 = new Person('Maria', 54, 1.7)
 
 console.log(p1.greet(p2))
 console.log(p2.greet(p1))
+
+console.log(new Person('Maria', 54, 1.7))
 
 // Using class keyword
 /*
@@ -75,9 +78,53 @@ function Room(number){
     this.guests = 0
 }
 
+// Add extra functionatality
+Room.prototype.reserve = function(guest){ 
+    this.available = false
+    this.guests = guest
+}
+
+Room.prototype.leave = function(){
+    this.available = true
+    this.guests = 0
+}
+
 const r1 = new Room(101)
 
 console.log(`${r1.number}\n${r1.available}\n${r1.guests}`)
+r1.reserve(3)
+console.log(`${r1.number}\n${r1.available}\n${r1.guests}`)
+r1.leave()
+console.log(`${r1.number}\n${r1.available}\n${r1.guests}`)
+
+/*
+class Room{
+    constructor(number){
+        this.number = number
+        this.available = true
+        this.guests = 0
+    }
+
+    reserve(guest){ 
+        this.available = false
+        this.guests = guest
+    }
+
+    leave(){
+        this.available = true
+        this.guests = 0
+    }
+}
+
+const r1 = new Room(101)
+
+console.log(`${r1.number}\n${r1.available}\n${r1.guests}`)
+r1.reserve(3)
+console.log(`${r1.number}\n${r1.available}\n${r1.guests}`)
+r1.leave()
+console.log(`${r1.number}\n${r1.available}\n${r1.guests}`)
+*/
+
 
 
 // LeetCode 771. Jewels and Stones
