@@ -1,4 +1,51 @@
 
+
+function Room(number){
+    this.number = number
+    this.available = true
+    this.guests = 0
+}
+
+class Hotel{
+    constructor(roomNums){
+        this.roomNums = roomNums
+        this.rooms = []
+        for(let i=1; i <= this.roomNums; i++){
+            this.rooms.push(new Room(i))
+        }
+    }
+
+    checkin(number, guestNum=1){
+        if( (number > 0 && number <= this.roomNums)  && this.rooms[number-1].available === true){
+            this.rooms[number-1].available = false
+            this.rooms[number-1].guests = guestNum
+            return true
+        }else{
+            return false
+        }
+    }
+
+    checkout(number){
+        if( (number > 0 && number <= this.roomNums)  && this.rooms[number-1].available === false){
+            this.rooms[number-1].available = true
+            this.rooms[number-1].guests = 0
+            return true
+        }else{
+            return false
+        }
+    }
+
+    getAvailableRooms(){
+        return this.rooms.filter(habi => habi.available === true )
+    }
+
+    getOccupiedRooms(){
+        return this.rooms.filter(habi => habi.available === false )
+    }
+
+}
+
+
 function Square(side){
     this.side = side
 }
@@ -16,11 +63,11 @@ function Person(name, weight, height){
 Person.prototype.bmi = function(){return Math.pow((this.weight/this.height), 2)}
 Person.prototype.greet = function(person){ return `Hi ${person.name} muy name is ${this.name}`}
 
-function Room(number){
-    this.number = number
-    this.available = true
-    this.guests = 0
-}
+// function Room(number){
+//     this.number = number
+//     this.available = true
+//     this.guests = 0
+// }
 
 
 
@@ -74,3 +121,58 @@ describe('Room Function Test', () => {
     })
 })
 
+
+describe('Hotel Function Test', () =>{    
+    const myHotel = new Hotel(2)
+
+    it('Should expect an Hotel object', () => {
+        expect( myHotel ).toMatchObject( { roomNums: 2, rooms:[ { number: 1, available: true, guests: 0 }, { number: 2, available: true, guests: 0 } ] })
+    })
+
+    it('Should expect an Hotel object', () => {
+        expect( myHotel.getAvailableRooms() ).toMatchObject( [
+            { number: 1, available: true, guests: 0 },
+            { number: 2, available: true, guests: 0 } 
+        ] )
+    })
+
+    it('Should expect []', () => {
+        expect( myHotel.getOccupiedRooms() ).toMatchObject( [] )
+    })
+
+    it('Should expect True', () => {
+        expect( myHotel.checkin(1, 3) ).toBe( true )
+    })
+
+    it('Should expect False', () => {
+        expect( myHotel.checkin(1, 8) ).toBe( false )
+    })
+
+    it('Should expect False', () => {
+        expect( myHotel.checkin(4, 8) ).toBe( false )
+    })
+
+    it('Should expect { number: 2, available: true, guests: 0 }', () => {
+        expect( myHotel.getAvailableRooms() ).toMatchObject( [
+            { number: 2, available: true, guests: 0 }
+        ] )
+    })
+
+    it('Should expect { number: 1, available: false, guests: 3 }', () => {
+        expect( myHotel.getOccupiedRooms() ).toMatchObject( [
+            { number: 1, available: false, guests: 3 } 
+        ] )
+    })
+
+    it('Should expect True', () => {
+        expect( myHotel.checkout(1) ).toBe( true )
+    })
+
+    it('Should expect False', () => {
+        expect( myHotel.checkout(1) ).toBe( false )
+    })
+
+    it('Should expect False', () => {
+        expect( myHotel.checkout(4) ).toBe( false )
+    })
+})
